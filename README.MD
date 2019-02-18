@@ -3,7 +3,7 @@
 ![alt text](/usage%20example.PNG "Usage example")
 
 To view details on the script and accompanying SQL query see the blogpost here:  
-https://github.com/abrignoni/Android-Usagestats-XML-Parser  
+https://abrignoni.blogspot.com/2019/02/android-usagestats-xml-parser.html 
 
 Usage:  
 1. Extract usagestats directory.  
