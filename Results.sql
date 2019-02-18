@@ -16,4 +16,4 @@ classs,
 source,
 fullatt
 from data
-order by lasttimeactive
+order by lasttimeactive DESC
