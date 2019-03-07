@@ -1,9 +1,10 @@
 import xml.etree.ElementTree as ET  
 import glob, os, sqlite3, os, sys, re, json
 
+processed = 0
+
 #Create sqlite databases
 db = sqlite3.connect('usagestats.db')
-
 cursor = db.cursor()
 
 #Create table usagedata.
@@ -25,7 +26,7 @@ print ('Android Usagestats XML Parser')
 print ('By: @AlexisBrignoni')
 print ('Web: abrignoni.com')
 print ()
-print ('Files processed: ')
+print ('Files: ')
 
 script_dir = os.path.dirname(__file__)
 for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
@@ -59,7 +60,7 @@ for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 			else:
 				tree = ET.parse(filename)
 				root = tree.getroot()
-				print('Processed: '+filename)
+				print('Processing: '+filename)
 				for elem in root:
 					#print(elem.tag)
 					usagetype = elem.tag
@@ -145,3 +146,80 @@ for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 								datainsert = (usagetype, finalt, '' , pkg , tipes , '' , sourced, fullatti_str,)
 								cursor.execute('INSERT INTO data (usage_type, lastime, timeactive, package, types, classs, source, fullatt)  VALUES(?,?,?,?,?,?,?,?)', datainsert)
 								db.commit()
+								
+#query for reporting
+cursor.execute('''
+select 
+usage_type,
+datetime(lastime/1000, 'UNIXEPOCH', 'localtime') as lasttimeactive,
+timeactive as time_Active_in_msecs,
+timeactive/1000 as timeactive_in_secs,
+package,
+CASE types
+     WHEN '1' THEN 'MOVE_TO_FOREGROUND'
+     WHEN '2' THEN 'MOVE_TO_BACKGROUND'
+     WHEN '5' THEN 'CONFIGURATION_CHANGE'
+	 WHEN '7' THEN 'USER_INTERACTION'
+	 WHEN '8' THEN 'SHORTCUT_INVOCATION'
+     ELSE types
+END types,
+classs,
+source,
+fullatt
+from data
+order by lasttimeactive DESC
+''')
+all_rows = cursor.fetchall()
+
+#HTML report section
+h = open('./Report.html', 'w')	
+h.write('<html><body>')
+h.write('<h2>Android Usagestats report</h2>')
+h.write ('<style> table, th, td {border: 1px solid black; border-collapse: collapse;}</style>')
+h.write('<br />')
+
+#HTML headers
+h.write('<table>')
+h.write('<tr>')
+h.write('<th>Usage Type</th>')
+h.write('<th>Last Time Active</th>')
+h.write('<th>Time Active in Msecs</th>')
+h.write('<th>Time Active in Secs</th>')
+h.write('<th>Package</th>')
+h.write('<th>Types</th>')
+h.write('<th>Class</th>')
+h.write('<th>Source</th>')
+h.write('</tr>')
+
+for row in all_rows:
+	usage_type = row[0]
+	lasttimeactive = row[1]
+	time_Active_in_msecs = row[2]
+	timeactive_in_secs = row[3]
+	package = row[4]
+	types = row[5]
+	classs = row[6]
+	source = row[7]
+	
+	processed = processed+1
+	#report data
+	h.write('<tr>')
+	h.write('<td>'+str(usage_type)+'</td>')
+	h.write('<td>'+str(lasttimeactive)+'</td>')
+	h.write('<td>'+str(time_Active_in_msecs)+'</td>')
+	h.write('<td>'+str(timeactive_in_secs)+'</td>')
+	h.write('<td>'+str(package)+'</td>')
+	h.write('<td>'+str(types)+'</td>')
+	h.write('<td>'+str(classs)+'</td>')
+	h.write('<td>'+str(source)+'</td>')
+	h.write('</tr>')
+
+#HTML footer	
+h.write('<table>')
+h.write('<br />')	
+
+print('')
+print('Records processed: '+str(processed))
+print('Triage report completed. See Reports.html.')	
+	
+	
