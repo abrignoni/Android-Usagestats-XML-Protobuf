@@ -28,7 +28,8 @@ print ('Web: abrignoni.com')
 print ()
 print ('Files: ')
 
-script_dir = os.path.dirname(__file__)
+#script_dir = os.path.dirname(__file__)
+script_dir = os.path.dirname(os.path.abspath(__file__))
 for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 	if os.path.isfile(filename): # filter dirs
 		file_name = os.path.basename(filename)
