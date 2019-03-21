@@ -45,13 +45,21 @@ for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 				sourced = 'monthly'
 			elif 'yearly' in filename:
 				sourced = 'yearly'
-				
-			file_name_int = int(file_name)
+			
+			try:
+				file_name_int = int(file_name)
+			except: 
+				print('Invalid filename: ')
+				print(filename)
+				print('')
+				err = 1
 			
 			try:
 				ET.parse(filename)
 			except ET.ParseError:
-				print('Parse error - Non XML file? at: '+filename)
+				print('Parse error - Non XML file? at: ')
+				print(filename)
+				print('')
 				err = 1
 				#print(filename)
 			
@@ -62,6 +70,7 @@ for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 				tree = ET.parse(filename)
 				root = tree.getroot()
 				print('Processing: '+filename)
+				print('')
 				for elem in root:
 					#print(elem.tag)
 					usagetype = elem.tag
