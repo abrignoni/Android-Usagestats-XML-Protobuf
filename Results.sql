@@ -3,6 +3,14 @@ usage_type,
 datetime(lastime/1000, 'UNIXEPOCH', 'localtime') as lasttimeactive,
 timeactive as time_Active_in_msecs,
 timeactive/1000 as timeactive_in_secs,
+case last_time_service_used  WHEN '' THEN ''
+ ELSE datetime(last_time_service_used/1000, 'UNIXEPOCH', 'localtime')
+end last_time_service_used,
+case last_time_visible  WHEN '' THEN ''
+ ELSE datetime(last_time_visible/1000, 'UNIXEPOCH', 'localtime') 
+end last_time_visible,
+total_time_visible,
+app_launch_count,
 package,
 CASE types
      WHEN '1' THEN 'MOVE_TO_FOREGROUND'

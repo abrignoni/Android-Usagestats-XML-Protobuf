@@ -12,3 +12,5 @@ Usage:
 4. Open the generated usagestats.db SQLite database with any SQLite viewer software.  
 5. Run the results.sql query on the generated database.  
 6. Export the results and/or modify SQL query as needed.  
+
+This now works with both XML based usagestats as well as the newer Protocol buffer one.
