@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET  
 import glob, os, sqlite3, os, sys, re, json
 import protobuf.usagestatsservice_pb2
+import usagestatsservice_pb2
 from enum import IntEnum
 
 class EventType(IntEnum):
@@ -179,6 +180,8 @@ for filename in glob.iglob(script_dir+r'/usagestats/**', recursive=True):
 					err = 1
 					#print(filename)
 				if stats:
+					print('Processing: '+filename)
+					print('')
 					AddEntriesToDb(stats, db)
 					continue
 			
