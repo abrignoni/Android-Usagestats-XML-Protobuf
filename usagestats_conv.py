@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET  
 import glob, os, sqlite3, os, sys, re, json
-import protobuf.usagestatsservice_pb2
-import usagestatsservice_pb2
+import protobuf.usagestatsservice_pb2 as usagestatsservice_pb2
 from enum import IntEnum
 
 class EventType(IntEnum):
