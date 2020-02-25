@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET  
 import glob, os, sqlite3, os, sys, re, json
-import protobuf.usagestatsservice_pb2
+import protobuf.usagestatsservice_pb2 as usagestatsservice_pb2
 from enum import IntEnum
 
 class EventType(IntEnum):
@@ -42,7 +42,7 @@ def ReadUsageStatsPbFile(input_path):
 		#print(stats)
 		return stats
 
-def AddEntriesToDb(stats, db):
+def AddEntriesToDb(sourced, file_name_int, stats, db):
 	cursor = db.cursor()
 	# packages
 	for usagestat in stats.packages:
@@ -179,7 +179,7 @@ for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 					err = 1
 					#print(filename)
 				if stats:
-					AddEntriesToDb(stats, db)
+					AddEntriesToDb(sourced, file_name_int, stats, db)
 					continue
 			
 			if err == 1:
