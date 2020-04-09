@@ -141,7 +141,7 @@ print ('Files: ')
 
 #script_dir = os.path.dirname(__file__)
 script_dir = os.path.dirname(os.path.abspath(__file__))
-for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
+for filename in glob.iglob(script_dir+r'/usagestats/**', recursive=True):
 	if os.path.isfile(filename): # filter dirs
 		file_name = os.path.basename(filename)
 		#Test if xml is well formed
@@ -281,7 +281,7 @@ for filename in glob.iglob(script_dir+r'\usagestats\**', recursive=True):
 								cursor = db.cursor()
 								cursor.execute('INSERT INTO data (usage_type, lastime, timeactive, last_time_service_used, last_time_visible, total_time_visible, '
 										   'app_launch_count, package, types, classs, source, fullatt)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?)', datainsert)
-								datainsert = (usagetype, finalt, '' , '' , pkg , tipes , '' , sourced, fullatti_str,)
+								datainsert = (usagetype, finalt, '' , '' , '', '', '', pkg , tipes , '' , sourced, fullatti_str,)
 								#cursor.execute('INSERT INTO data (usage_type, lastime, timeactive, package, types, classs, source, fullatt)  VALUES(?,?,?,?,?,?,?,?)', datainsert)
 								db.commit()
 								

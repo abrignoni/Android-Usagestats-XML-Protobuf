@@ -1,4 +1,4 @@
-# Android Usagestats XML Parser  
+# Android Usagestats XML & Protobuf Parser  
 
 ![alt text](/usage%20example.PNG "Usage example")
 
@@ -14,3 +14,7 @@ Usage:
 6. Export the results and/or modify SQL query as needed.  
 
 This now works with both XML based usagestats as well as the newer Protocol buffer one.
+For Protocol buffer support the following is a pre-requirement: pip install protobuf
+
+Thanks and all credit go to Yogesh Khatri for protobuf support. FOr more information see the following blogpost:
+https://www.swiftforensics.com/2020/01/usagestats-on-android-10-q.html
