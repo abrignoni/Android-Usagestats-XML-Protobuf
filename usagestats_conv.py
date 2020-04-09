@@ -42,7 +42,7 @@ def ReadUsageStatsPbFile(input_path):
 		#print(stats)
 		return stats
 
-def AddEntriesToDb(sourced, file_name_int, stats, db):
+def AddEntriesToDb(stats, db):
 	cursor = db.cursor()
 	# packages
 	for usagestat in stats.packages:
@@ -179,7 +179,9 @@ for filename in glob.iglob(script_dir+r'/usagestats/**', recursive=True):
 					err = 1
 					#print(filename)
 				if stats:
-					AddEntriesToDb(sourced, file_name_int, stats, db)
+					print('Processing: '+filename)
+					print('')
+					AddEntriesToDb(stats, db)
 					continue
 			
 			if err == 1:
